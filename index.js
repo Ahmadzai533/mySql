@@ -3,6 +3,10 @@ const mysql = require("mysql2");
 
 const express = require("express");
 const app = express();
+// const path = require("path");
+
+// app.set("view engine", "ejs");
+// app.set("views", path.join(__dirname, "/views"));
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -21,21 +25,36 @@ let getUser = () => {
 };
 
 app.get("/", (req, res) => {
-  let q = `SELECT count(*) as count FROM users`;
+  let q = `SELECT count(*) FROM users`;
   try {
     connection.query(q, (err, result) => {
       if (err) throw err;
-      console.log(result[0]["count(*)"]);
-      res.send("successfully inserted data into the database");
+      let home = result[0]["count(*)"];
+      // console.log(result[0]["count(*):key"]);
+
+      // res.send("work is good ");
+
+      res.render("home.ejs", { home });
     });
   } catch (err) {
     console.log(err);
     console.log("Error inserting data into the database");
   }
-
-  connection.end();
 });
 
+app.get("/users", (req, res) => {
+  let q = `select * from users`;
+  try {
+    connection.query(q, (err, usrs) => {
+      if (err) throw err;
+
+      res.render("showuser.ejs", { usrs });
+    });
+  } catch (err) {
+    console.log(err);
+    console.log("Error inserting data into the database");
+  }
+});
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
