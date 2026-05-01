@@ -56,6 +56,12 @@ app.get("/users", (req, res) => {
   }
 });
 
+app.get("/users/:id/edit", (req, res) => {
+  let { id } = req.params;
+  let q = `select * from users where id = ${id}`;
+  res.render("edit.ejs");
+});
+
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
