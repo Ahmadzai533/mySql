@@ -110,10 +110,25 @@ app.post("/users/new", (req, res) => {
     res.send("some error occurred");
   }
 });
+app.get("/users/:id/delete", (req, res) => {
+  let { id } = req.params;
+  let q = `select * from users where id = '${id}'`;
+  try {
+    connection.query(q, (err, result) => {
+      if (err) throw err;
+      let user = result[0];
+      res.render("showuser.ejs", { user });
+    });
+  } catch (err) {
+    console.log(err);
+    console.log("Error occurred while fetching user");
+  }
+}); 
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
+
 
 // app.patch("/users/:id", (req, res) => {
 //   let { id } = req.params;
