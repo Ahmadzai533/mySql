@@ -117,18 +117,30 @@ app.get("/users/:id/delete", (req, res) => {
     connection.query(q, (err, result) => {
       if (err) throw err;
       let user = result[0];
-      res.render("showuser.ejs", { user });
+      res.render("deleteuser.ejs", { user });
     });
   } catch (err) {
     console.log(err);
     console.log("Error occurred while fetching user");
   }
-}); 
+});
+app.delete("/users/:id", (req, res) => {
+  let { id } = req.params;
+  let q = `DELETE FROM users WHERE id='${id}'`;
+  try {
+    connection.query(q, (err, result) => {
+      if (err) throw err;
+      res.redirect("/users");
+    });
+  } catch (err) {
+    console.log(err);
+    console.log("Error occurred while deleting user");
+  }
+});
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
-
 
 // app.patch("/users/:id", (req, res) => {
 //   let { id } = req.params;
