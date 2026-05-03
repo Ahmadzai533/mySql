@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Rout</title>
-</head>
-<body>
-    <h1> we are going to edit a route</h1>
-    
-
-    
-</body>
+  </head>
+  <body>
+    <h1>we are going to edit a route</h1>
+    <h1>this user email: <%=users.email%></h1>
+    <form action="/users/<%=users.id%>?_method=PATCH" method="post">
+      <textarea name="username" placeholder="<%=users.username %>"></textarea>
+      <input type="password" name="password" placeholder="*****" />
+      <button>update</button>
+    </form>
+  </body>
 </html>
