@@ -33,7 +33,10 @@
 
   <td>  
     <form action="/users/<%= usr.id%>/edit" method="get"> <button>Edit user</button></form> </td>
+
+    <td><form action="/users/<%=usr.id%>?_method=DELETE  " method="POST"><button>Delete user</button></form></td>
   </tr>
+
 
 
 
