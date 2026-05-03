@@ -110,9 +110,11 @@ app.post("/users/new", (req, res) => {
     res.send("some error occurred");
   }
 });
+
 app.get("/users/:id/delete", (req, res) => {
   let { id } = req.params;
-  let q = `select * from users where id = '${id}'`;
+  let q = `SELECT * FROM users  WHERE id='${id}'`;
+
   try {
     connection.query(q, (err, result) => {
       if (err) throw err;
@@ -120,21 +122,36 @@ app.get("/users/:id/delete", (req, res) => {
       res.render("deleteuser.ejs", { user });
     });
   } catch (err) {
-    console.log(err);
-    console.log("Error occurred while fetching user");
+    res.send("some error with DB");
   }
 });
-app.delete("/users/:id", (req, res) => {
+
+app.delete("/users/:id/", (req, res) => {
   let { id } = req.params;
-  let q = `DELETE FROM users WHERE id='${id}'`;
+  let { password } = req.body;
+  let q = `SELECT * FROM users WHERE id='${id}'`;
+
   try {
     connection.query(q, (err, result) => {
       if (err) throw err;
-      res.redirect("/users");
+      let user = result[0];
+
+      if (user.password != password) {
+        res.send("WRONG Password entered!");
+      } else {
+        let q2 = `DELETE FROM users WHERE id='${id}'`; //Query to Delete
+        connection.query(q2, (err, result) => {
+          if (err) throw err;
+          else {
+            console.log(result);
+            console.log("deleted!");
+            res.redirect("/users");
+          }
+        });
+      }
     });
   } catch (err) {
-    console.log(err);
-    console.log("Error occurred while deleting user");
+    res.send("some error with DB");
   }
 });
 
